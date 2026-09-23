@@ -1,0 +1,81 @@
+Model,Actual,Predicted,Count
+Logistic Regression,Batsman,Batsman,103
+Logistic Regression,Batsman,Batting All-rounder,1
+Logistic Regression,Batsman,Bowler,2
+Logistic Regression,Batsman,Bowling All-rounder,0
+Logistic Regression,Batting All-rounder,Batsman,4
+Logistic Regression,Batting All-rounder,Batting All-rounder,40
+Logistic Regression,Batting All-rounder,Bowler,0
+Logistic Regression,Batting All-rounder,Bowling All-rounder,2
+Logistic Regression,Bowler,Batsman,2
+Logistic Regression,Bowler,Batting All-rounder,1
+Logistic Regression,Bowler,Bowler,29
+Logistic Regression,Bowler,Bowling All-rounder,7
+Logistic Regression,Bowling All-rounder,Batsman,1
+Logistic Regression,Bowling All-rounder,Batting All-rounder,2
+Logistic Regression,Bowling All-rounder,Bowler,7
+Logistic Regression,Bowling All-rounder,Bowling All-rounder,67
+Naive Bayes,Batsman,Batsman,100
+Naive Bayes,Batsman,Batting All-rounder,5
+Naive Bayes,Batsman,Bowler,1
+Naive Bayes,Batsman,Bowling All-rounder,0
+Naive Bayes,Batting All-rounder,Batsman,4
+Naive Bayes,Batting All-rounder,Batting All-rounder,36
+Naive Bayes,Batting All-rounder,Bowler,2
+Naive Bayes,Batting All-rounder,Bowling All-rounder,4
+Naive Bayes,Bowler,Batsman,2
+Naive Bayes,Bowler,Batting All-rounder,1
+Naive Bayes,Bowler,Bowler,34
+Naive Bayes,Bowler,Bowling All-rounder,2
+Naive Bayes,Bowling All-rounder,Batsman,0
+Naive Bayes,Bowling All-rounder,Batting All-rounder,3
+Naive Bayes,Bowling All-rounder,Bowler,20
+Naive Bayes,Bowling All-rounder,Bowling All-rounder,54
+SVM,Batsman,Batsman,102
+SVM,Batsman,Batting All-rounder,3
+SVM,Batsman,Bowler,0
+SVM,Batsman,Bowling All-rounder,1
+SVM,Batting All-rounder,Batsman,8
+SVM,Batting All-rounder,Batting All-rounder,38
+SVM,Batting All-rounder,Bowler,0
+SVM,Batting All-rounder,Bowling All-rounder,0
+SVM,Bowler,Batsman,0
+SVM,Bowler,Batting All-rounder,2
+SVM,Bowler,Bowler,30
+SVM,Bowler,Bowling All-rounder,7
+SVM,Bowling All-rounder,Batsman,0
+SVM,Bowling All-rounder,Batting All-rounder,1
+SVM,Bowling All-rounder,Bowler,2
+SVM,Bowling All-rounder,Bowling All-rounder,74
+Random Forest,Batsman,Batsman,106
+Random Forest,Batsman,Batting All-rounder,0
+Random Forest,Batsman,Bowler,0
+Random Forest,Batsman,Bowling All-rounder,0
+Random Forest,Batting All-rounder,Batsman,1
+Random Forest,Batting All-rounder,Batting All-rounder,45
+Random Forest,Batting All-rounder,Bowler,0
+Random Forest,Batting All-rounder,Bowling All-rounder,0
+Random Forest,Bowler,Batsman,1
+Random Forest,Bowler,Batting All-rounder,0
+Random Forest,Bowler,Bowler,37
+Random Forest,Bowler,Bowling All-rounder,1
+Random Forest,Bowling All-rounder,Batsman,0
+Random Forest,Bowling All-rounder,Batting All-rounder,3
+Random Forest,Bowling All-rounder,Bowler,0
+Random Forest,Bowling All-rounder,Bowling All-rounder,74
+XGBoost,Batsman,Batsman,106
+XGBoost,Batsman,Batting All-rounder,0
+XGBoost,Batsman,Bowler,0
+XGBoost,Batsman,Bowling All-rounder,0
+XGBoost,Batting All-rounder,Batsman,1
+XGBoost,Batting All-rounder,Batting All-rounder,45
+XGBoost,Batting All-rounder,Bowler,0
+XGBoost,Batting All-rounder,Bowling All-rounder,0
+XGBoost,Bowler,Batsman,0
+XGBoost,Bowler,Batting All-rounder,0
+XGBoost,Bowler,Bowler,39
+XGBoost,Bowler,Bowling All-rounder,0
+XGBoost,Bowling All-rounder,Batsman,0
+XGBoost,Bowling All-rounder,Batting All-rounder,1
+XGBoost,Bowling All-rounder,Bowler,0
+XGBoost,Bowling All-rounder,Bowling All-rounder,76
