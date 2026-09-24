@@ -6,22 +6,13 @@ import streamlit as st
 
 
 # ============================================================
-# PATHS
+# PROJECT PATHS
 # ============================================================
 
 PROJECT_ROOT = Path(__file__).resolve().parent
 
-SCORE_MODEL_PATH = (
-    PROJECT_ROOT
-    / "models"
-    / "final_xgboost_model.pkl"
-)
-
-PLAYER_MODEL_PATH = (
-    PROJECT_ROOT
-    / "models"
-    / "final_player_classifier.pkl"
-)
+SCORE_MODEL_PATH = PROJECT_ROOT / "models" / "final_xgboost_model.pkl"
+PLAYER_MODEL_PATH = PROJECT_ROOT / "models" / "final_player_classifier.pkl"
 
 
 # ============================================================
@@ -31,7 +22,8 @@ PLAYER_MODEL_PATH = (
 st.set_page_config(
     page_title="Cricket Analytics ML",
     page_icon="🏏",
-    layout="wide"
+    layout="wide",
+    initial_sidebar_state="expanded"
 )
 
 
@@ -53,20 +45,46 @@ st.markdown(
     .subtitle {
         text-align: center;
         font-size: 18px;
-        margin-bottom: 30px;
+        margin-bottom: 25px;
+    }
+
+    .section-title {
+        font-size: 28px;
+        font-weight: 650;
     }
 
     .result-box {
         padding: 25px;
         border-radius: 12px;
         text-align: center;
-        border: 1px solid #cccccc;
+        border: 1px solid #777777;
         margin-top: 20px;
+        margin-bottom: 20px;
+    }
+
+    .result-label {
+        font-size: 17px;
+        margin-bottom: 8px;
     }
 
     .result-number {
         font-size: 42px;
         font-weight: 700;
+    }
+
+    .info-box {
+        padding: 18px;
+        border-radius: 10px;
+        border: 1px solid #555555;
+        margin-top: 10px;
+        margin-bottom: 15px;
+    }
+
+    .footer {
+        text-align: center;
+        margin-top: 35px;
+        padding: 15px;
+        font-size: 14px;
     }
 
     </style>
@@ -82,22 +100,14 @@ st.markdown(
 @st.cache_resource
 def load_score_model():
 
-    with open(
-        SCORE_MODEL_PATH,
-        "rb"
-    ) as file:
-
+    with open(SCORE_MODEL_PATH, "rb") as file:
         return pickle.load(file)
 
 
 @st.cache_resource
 def load_player_model():
 
-    with open(
-        PLAYER_MODEL_PATH,
-        "rb"
-    ) as file:
-
+    with open(PLAYER_MODEL_PATH, "rb") as file:
         return pickle.load(file)
 
 
@@ -117,7 +127,19 @@ st.markdown(
 st.markdown(
     """
     <div class="subtitle">
-    Machine Learning for ODI Score Prediction and Player Role Classification
+    ODI Score Prediction & Player Role Classification using Machine Learning
+    </div>
+    """,
+    unsafe_allow_html=True
+)
+
+st.markdown(
+    """
+    <div class="info-box">
+    <b>Project Overview</b><br><br>
+    This system applies machine learning to ball-by-ball ODI cricket data
+    for two tasks: predicting the final innings score from the current match
+    state and classifying players into functional cricket roles.
     </div>
     """,
     unsafe_allow_html=True
@@ -125,13 +147,61 @@ st.markdown(
 
 
 # ============================================================
-# NAVIGATION
+# SIDEBAR
 # ============================================================
 
-tab_score, tab_player = st.tabs(
+with st.sidebar:
+
+    st.header("📊 Model Performance")
+
+    st.subheader("🏏 Score Prediction")
+
+    st.metric(
+        "MAE",
+        "32.95 runs"
+    )
+
+    st.metric(
+        "RMSE",
+        "44.25 runs"
+    )
+
+    st.metric(
+        "R²",
+        "0.5229"
+    )
+
+    st.divider()
+
+    st.subheader("👤 Player Classification")
+
+    st.metric(
+        "Test Accuracy",
+        "99.25%"
+    )
+
+    st.metric(
+        "5-Fold CV",
+        "97.61% ± 0.90%"
+    )
+
+    st.divider()
+
+    st.caption(
+        "Models: XGBoost\n\n"
+        "Dataset: ODI ball-by-ball data from Cricsheet"
+    )
+
+
+# ============================================================
+# NAVIGATION TABS
+# ============================================================
+
+tab_score, tab_player, tab_about = st.tabs(
     [
         "🏏 Score Prediction",
-        "👤 Player Classification"
+        "👤 Player Classification",
+        "ℹ️ About the Project"
     ]
 )
 
@@ -142,18 +212,24 @@ tab_score, tab_player = st.tabs(
 
 with tab_score:
 
-    st.header("🏏 Cricket Score Prediction")
+    st.markdown(
+        '<div class="section-title">🏏 ODI Final Score Prediction</div>',
+        unsafe_allow_html=True
+    )
 
     st.write(
         "Enter the current state of an ODI innings. "
-        "The trained XGBoost model will estimate the final score."
+        "The trained XGBoost regression model estimates the eventual "
+        "final score."
     )
+
+    st.divider()
 
     # --------------------------------------------------------
     # MATCH STATE
     # --------------------------------------------------------
 
-    st.subheader("Match State")
+    st.subheader("1. Match State")
 
     col1, col2, col3, col4 = st.columns(4)
 
@@ -231,15 +307,21 @@ with tab_score:
 
     with col4:
 
-        season = st.number_input(
+        season = st.text_input(
             "Season",
-            value=2024        )
+            value="2024"
+        )
 
     # --------------------------------------------------------
     # TEMPORAL FEATURES
     # --------------------------------------------------------
 
-    st.subheader("Recent Performance")
+    st.subheader("2. Recent Innings Performance")
+
+    st.caption(
+        "These features describe recent scoring and wicket activity "
+        "observed during the innings."
+    )
 
     col1, col2, col3 = st.columns(3)
 
@@ -309,7 +391,7 @@ with tab_score:
     # MATCH INFORMATION
     # --------------------------------------------------------
 
-    st.subheader("Match Information")
+    st.subheader("3. Match Information")
 
     col1, col2 = st.columns(2)
 
@@ -360,7 +442,7 @@ with tab_score:
         )
 
     # --------------------------------------------------------
-    # PREDICT
+    # PREDICTION
     # --------------------------------------------------------
 
     st.divider()
@@ -414,20 +496,31 @@ with tab_score:
             st.markdown(
                 f"""
                 <div class="result-box">
-                    <div>Predicted Final Score</div>
+                    <div class="result-label">
+                    Predicted Final Score
+                    </div>
                     <div class="result-number">
-                        {prediction} runs
+                    {prediction} runs
                     </div>
                 </div>
                 """,
                 unsafe_allow_html=True
             )
 
+            st.success(
+                "Prediction generated using the trained XGBoost score "
+                "prediction pipeline."
+            )
+
+            st.caption(
+                f"Current score: {total_score} runs | "
+                f"Wickets lost: {wickets} | "
+                f"Overs remaining: {overs_remaining}"
+            )
+
         except Exception as error:
 
-            st.error(
-                "Prediction failed."
-            )
+            st.error("Prediction failed.")
 
             st.exception(error)
 
@@ -438,14 +531,19 @@ with tab_score:
 
 with tab_player:
 
-    st.header("👤 Player Role Classification")
+    st.markdown(
+        '<div class="section-title">👤 Player Role Classification</div>',
+        unsafe_allow_html=True
+    )
 
     st.write(
-        "Enter a player's performance statistics "
+        "Enter a player's batting and bowling performance statistics "
         "to classify their functional cricket role."
     )
 
-    st.subheader("Player Performance")
+    st.divider()
+
+    st.subheader("Player Performance Statistics")
 
     col1, col2, col3 = st.columns(3)
 
@@ -601,22 +699,135 @@ with tab_player:
             st.markdown(
                 f"""
                 <div class="result-box">
-                    <div>Predicted Player Role</div>
+                    <div class="result-label">
+                    Predicted Player Role
+                    </div>
                     <div class="result-number">
-                        {role}
+                    {role}
                     </div>
                 </div>
                 """,
                 unsafe_allow_html=True
             )
 
-        except Exception as error:
-
-            st.error(
-                "Classification failed."
+            st.success(
+                "Classification generated using the trained XGBoost "
+                "player-role classifier."
             )
 
+            st.caption(
+                f"Runs: {runs:.0f} | "
+                f"Batting Average: {average:.2f} | "
+                f"Wickets: {p_wickets}"
+            )
+
+        except Exception as error:
+
+            st.error("Classification failed.")
+
             st.exception(error)
+
+
+# ============================================================
+# ABOUT / METHODOLOGY
+# ============================================================
+
+with tab_about:
+
+    st.markdown(
+        '<div class="section-title">ℹ️ About the Project</div>',
+        unsafe_allow_html=True
+    )
+
+    st.write(
+        "This project develops a machine learning framework for cricket "
+        "analytics using ball-by-ball ODI data from Cricsheet."
+    )
+
+    st.subheader("Machine Learning Tasks")
+
+    col1, col2 = st.columns(2)
+
+    with col1:
+
+        st.markdown(
+            """
+            ### 🏏 Score Prediction
+
+            **Model:** XGBoost Regression
+
+            **Features:** 20
+
+            **MAE:** 32.95 runs
+
+            **RMSE:** 44.25 runs
+
+            **R²:** 0.5229
+
+            The model combines current match state with temporal
+            information describing recent innings behavior.
+            """
+        )
+
+    with col2:
+
+        st.markdown(
+            """
+            ### 👤 Player Classification
+
+            **Model:** XGBoost Classification
+
+            **Classes:** 4
+
+            **Test Accuracy:** 99.25%
+
+            **5-Fold CV:** 97.61% ± 0.90%
+
+            The classifier categorizes players as Batsmen,
+            Batting All-rounders, Bowlers, or Bowling All-rounders.
+            """
+        )
+
+    st.divider()
+
+    st.subheader("Score Prediction Features")
+
+    st.write(
+        """
+        The final score prediction model uses match-state and temporal
+        features including current score, wickets, run rate, overs
+        remaining, recent scoring, boundary rate, dot-ball rate,
+        recent wicket activity, teams, venue, and player information.
+        """
+    )
+
+    st.subheader("Evaluation Findings")
+
+    st.write(
+        """
+        Error analysis showed that prediction error decreases as the
+        innings progresses. The model produced higher errors during the
+        early stages of an innings and substantially lower errors when
+        fewer overs remained.
+        """
+    )
+
+    st.write(
+        """
+        A separate robustness analysis also showed that unusually short
+        innings are substantially more difficult to predict than normal
+        long innings.
+        """
+    )
+
+    st.subheader("Technology Stack")
+
+    st.write(
+        """
+        Python • Pandas • NumPy • Scikit-learn • XGBoost • Matplotlib
+        • Streamlit • Cricsheet • Git/GitHub
+        """
+    )
 
 
 # ============================================================
@@ -625,7 +836,12 @@ with tab_player:
 
 st.divider()
 
-st.caption(
-    "Cricket Analytics ML | "
-    "ODI Score Prediction and Player Role Classification"
+st.markdown(
+    """
+    <div class="footer">
+    Cricket Analytics ML<br>
+    ODI Score Prediction & Player Role Classification
+    </div>
+    """,
+    unsafe_allow_html=True
 )
